@@ -2,10 +2,17 @@ package main.java.com.codexsan;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class PomodoroApp extends JFrame {
 
     private JLabel timeLabel;
     private JButton startButton;
+    private Timer timer;
+
+    private int timeLeftInSeconds = 1500;
+    private boolean isRunning = false;
 
     public PomodoroApp(){
         setTitle("Catmodoro");
@@ -36,9 +43,35 @@ public class PomodoroApp extends JFrame {
         startButton.setBorderPainted(false);
         startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        //Timer configuration
+        timer = new Timer(1000, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(timeLeftInSeconds > 0){
+                    timeLeftInSeconds--;
+                    updateTimeDisplay();
+                } else {
+                    timer.stop();
+                    isRunning = false;
+                    startButton.setText("Terminado!");
+                    startButton.setEnabled(false);
+                }
+            }
+        });
+
+        //Start timer configuration
         startButton.addActionListener(e -> {
-            timeLabel.setForeground(new Color(120, 220, 120));
-            startButton.setText("Probando...");
+            if(!isRunning){
+                timer.start();
+                isRunning = true;
+                startButton.setText("Pausar");
+                startButton.setBackground(new Color(180, 80, 80));
+            } else {
+                timer.stop();
+                isRunning = false;
+                startButton.setText("Reanudar");
+                startButton.setBackground(new Color(46, 139, 87));
+            }
         });
 
         mainPanel.add(timeLabel);
@@ -46,6 +79,12 @@ public class PomodoroApp extends JFrame {
         mainPanel.add(startButton);
 
         add(mainPanel);
+    }
+
+    private void updateTimeDisplay(){
+        int minutes = timeLeftInSeconds / 60;
+        int seconds = timeLeftInSeconds % 60;
+        timeLabel.setText(String.format("%02d:%02d", minutes, seconds));
     }
 
     public static void main(String[] args){
