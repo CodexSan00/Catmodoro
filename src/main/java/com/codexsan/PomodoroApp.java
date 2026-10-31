@@ -14,7 +14,7 @@ public class PomodoroApp extends JFrame {
     private JButton startButton;
     private Timer timer;
 
-    private int timeLeftInSeconds = 5;
+    private int timeLeftInSeconds = 1500;
     private boolean isRunning = false;
     private boolean isWorkSession = true;
 
@@ -118,13 +118,13 @@ public class PomodoroApp extends JFrame {
         isWorkSession = !isWorkSession;
 
         if(isWorkSession){
-            timeLeftInSeconds = 5;
+            timeLeftInSeconds = 1500;
             timeLabel.setForeground(new Color(255, 179, 0));
             startButton.setText("Stop focus");
             playNotificationSound();
             showDesktopNotification("Tiempo de break terminado", "A trabajar!", "/home/santiagod/Escritorio/code/catmodoro/src/main/resources/icon.png\"");
         } else {
-            timeLeftInSeconds = 5;
+            timeLeftInSeconds = 1500;
             timeLabel.setForeground(new Color(100, 200, 255));
             startButton.setText("Stop break");
             playNotificationSound();
