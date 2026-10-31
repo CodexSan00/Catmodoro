@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import javax.sound.sampled.*;
+
 
 public class PomodoroApp extends JFrame {
 
@@ -11,7 +14,7 @@ public class PomodoroApp extends JFrame {
     private JButton startButton;
     private Timer timer;
 
-    private int timeLeftInSeconds = 1500;
+    private int timeLeftInSeconds = 5;
     private boolean isRunning = false;
     private boolean isWorkSession = true;
 
@@ -79,17 +82,53 @@ public class PomodoroApp extends JFrame {
         add(mainPanel);
     }
 
+    //Play notification sound
+    private void playNotificationSound(){
+        try{
+            File soundFile = new File("src/main/resources/bell.wav");
+            if(soundFile.exists()){
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioIn);
+                clip.start();
+            } else {
+                Toolkit.getDefaultToolkit().beep();
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    //Show notification
+    private void showDesktopNotification(String title, String message, String iconPath){
+
+        if(SystemTray.isSupported()){
+            try{
+                String[] cmd = {"notify-send", title, message, "-i", iconPath};
+                Runtime.getRuntime().exec(cmd);
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     private void switchSession(){
         isWorkSession = !isWorkSession;
 
         if(isWorkSession){
-            timeLeftInSeconds = 1500;
+            timeLeftInSeconds = 5;
             timeLabel.setForeground(new Color(255, 179, 0));
             startButton.setText("Stop focus");
+            playNotificationSound();
+            showDesktopNotification("Tiempo de break terminado", "A trabajar!", "/home/santiagod/Escritorio/code/catmodoro/src/main/resources/icon.png\"");
         } else {
-            timeLeftInSeconds = 300;
+            timeLeftInSeconds = 5;
             timeLabel.setForeground(new Color(100, 200, 255));
             startButton.setText("Stop break");
+            playNotificationSound();
+            showDesktopNotification("Tiempo de focus terminado!", "A descansar!", "/home/santiagod/Escritorio/code/catmodoro/src/main/resources/icon.png");
         }
         updateTimeDisplay();
     }
