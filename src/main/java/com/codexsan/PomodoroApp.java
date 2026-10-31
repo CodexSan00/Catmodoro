@@ -122,7 +122,7 @@ public class PomodoroApp extends JFrame {
             timeLabel.setForeground(new Color(255, 179, 0));
             startButton.setText("Stop focus");
             playNotificationSound();
-            showDesktopNotification("Tiempo de break terminado", "A trabajar!", "/home/santiagod/Escritorio/code/catmodoro/src/main/resources/icon.png\"");
+            showDesktopNotification("Tiempo de break terminado", "A trabajar!", "/home/santiagod/Escritorio/code/catmodoro/src/main/resources/icon.png");
         } else {
             timeLeftInSeconds = 1500;
             timeLabel.setForeground(new Color(100, 200, 255));
