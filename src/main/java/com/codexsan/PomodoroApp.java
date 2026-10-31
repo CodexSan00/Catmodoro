@@ -13,6 +13,7 @@ public class PomodoroApp extends JFrame {
 
     private int timeLeftInSeconds = 1500;
     private boolean isRunning = false;
+    private boolean isWorkSession = true;
 
     public PomodoroApp(){
         setTitle("Catmodoro");
@@ -51,10 +52,7 @@ public class PomodoroApp extends JFrame {
                     timeLeftInSeconds--;
                     updateTimeDisplay();
                 } else {
-                    timer.stop();
-                    isRunning = false;
-                    startButton.setText("Terminado!");
-                    startButton.setEnabled(false);
+                    switchSession();
                 }
             }
         });
@@ -79,6 +77,21 @@ public class PomodoroApp extends JFrame {
         mainPanel.add(startButton);
 
         add(mainPanel);
+    }
+
+    private void switchSession(){
+        isWorkSession = !isWorkSession;
+
+        if(isWorkSession){
+            timeLeftInSeconds = 1500;
+            timeLabel.setForeground(new Color(255, 179, 0));
+            startButton.setText("Stop focus");
+        } else {
+            timeLeftInSeconds = 300;
+            timeLabel.setForeground(new Color(100, 200, 255));
+            startButton.setText("Stop break");
+        }
+        updateTimeDisplay();
     }
 
     private void updateTimeDisplay(){
