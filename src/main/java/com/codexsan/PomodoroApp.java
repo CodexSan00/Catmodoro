@@ -124,7 +124,7 @@ public class PomodoroApp extends JFrame {
             playNotificationSound();
             showDesktopNotification("Tiempo de break terminado", "A trabajar!", "/home/santiagod/Escritorio/code/catmodoro/src/main/resources/icon.png");
         } else {
-            timeLeftInSeconds = 1500;
+            timeLeftInSeconds = 300;
             timeLabel.setForeground(new Color(100, 200, 255));
             startButton.setText("Stop break");
             playNotificationSound();
